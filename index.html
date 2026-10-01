@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Inference Simulators 11 — Role Primer: Simulation &amp; Frameworks Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Geist+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1c1815;
+            --bg-card: #231e1a;
+            --bg-code: #2b2520;
+            --text-primary: #efe8dc;
+            --text-secondary: #a2978b;
+            --accent: #aabd59;
+            --accent-dim: #aabd5944;
+            --accent-glow: #aabd5933;
+            --border: #3a322b;
+            --font-display: 'Bricolage Grotesque', sans-serif;
+            --font-mono: 'Geist Mono', 'Geist Mono', monospace;
+            --font-body: 'Instrument Sans', sans-serif;
+            --max-width: 900px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── Header ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .series-label {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Tag Pills ── */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            background: var(--accent-dim);
+            white-space: nowrap;
+        }
+
+        /* ── Pipeline Flow Bar ── */
+        .pipeline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            max-width: var(--max-width);
+        }
+
+        .pipeline-step {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .pipeline-arrow {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* ── Slides ── */
+        .slide {
+            min-height: 100vh;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide-number {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent-dim);
+            position: absolute;
+            top: 2rem;
+            right: 1.5rem;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .slide h2 {
+            font-family: var(--font-display);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            line-height: 1.25;
+        }
+
+        .slide h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .slide p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .slide p strong {
+            color: var(--text-primary);
+        }
+
+        .slide ul, .slide ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .slide li {
+            margin-bottom: 0.4rem;
+        }
+
+        .slide li strong {
+            color: var(--text-primary);
+        }
+
+        /* ── Code Blocks ── */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(170,189,89,0.08);
+            padding: 0.4rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #dad1c5;
+        }
+
+        /* Syntax highlighting (manual) */
+        .kw { color: #de805a; }
+        .fn { color: #d7bbdf; }
+        .str { color: #bcdbd4; }
+        .cm { color: #a2978b; font-style: italic; }
+        .num { color: #97cdc6; }
+        .type { color: #e3b174; }
+        .dir { color: #de805a; }
+        .mac { color: #e3b174; }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1.25rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--bg-code);
+            color: var(--accent);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-display);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) td {
+            background: rgba(35,30,26,0.5);
+        }
+
+        /* ── Diagrams ── */
+        .diagram-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .diagram-box {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .diagram-box.accent {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(170,189,89,0.08);
+        }
+
+        .diagram-box.dim {
+            color: var(--text-secondary);
+            border-color: var(--border);
+        }
+
+        .diagram-arrow {
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* Vertical flow diagrams */
+        .diagram-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .diagram-vertical .diagram-arrow {
+            font-size: 1.1rem;
+        }
+
+        /* Nested hierarchy diagram */
+        .hierarchy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .hierarchy-level {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hierarchy-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .hierarchy-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .hierarchy-item {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .hierarchy-item.accent {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(170,189,89,0.08);
+        }
+
+        /* Grid diagram */
+        .diagram-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .diagram-grid.cols-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .diagram-grid.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .diagram-panel {
+            padding: 1rem;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .diagram-panel.accent-border {
+            border-left: 3px solid var(--accent);
+        }
+
+        .diagram-panel h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .diagram-panel p, .diagram-panel ul {
+            font-size: 0.85rem;
+        }
+
+        /* ── Callout Boxes ── */
+        .callout {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .callout p {
+            margin-bottom: 0;
+        }
+
+        .callout .callout-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── Tier Visual ── */
+        .tier-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .tier-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .tier-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 90px;
+            text-align: right;
+        }
+
+        .tier-fill {
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            white-space: nowrap;
+            transition: width 0.6s ease;
+        }
+
+        .tier-cost {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            min-width: 70px;
+        }
+
+        /* ── Contents list ── */
+        .contents-list {
+            list-style: none;
+            padding-left: 0;
+            counter-reset: contents;
+        }
+
+        .contents-list li {
+            counter-increment: contents;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contents-list li:last-child {
+            border-bottom: none;
+        }
+
+        .contents-list li::before {
+            content: counter(contents, decimal-leading-zero);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            min-width: 2rem;
+        }
+
+        .contents-list a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contents-list a:hover {
+            color: var(--accent);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .slide {
+                padding: 3rem 1rem;
+                min-height: auto;
+            }
+
+            .slide-number {
+                font-size: 3rem;
+                top: 1.5rem;
+                right: 1rem;
+            }
+
+            .slide h2 {
+                font-size: 1.5rem;
+            }
+
+            .diagram-grid.cols-2,
+            .diagram-grid.cols-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                gap: 0.15rem;
+            }
+
+            .pipeline-step {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.4rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            table {
+                font-size: 0.78rem;
+            }
+
+            .tier-label {
+                min-width: 60px;
+                font-size: 0.65rem;
+            }
+
+            .tier-fill {
+                font-size: 0.6rem;
+                height: 26px;
+            }
+        }
+
+        /* ── Interactive controls (added for Local LLM series) ── */
+        .control-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+        }
+        .control-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .control-row label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            min-width: 180px;
+        }
+        .control-row input[type="range"] {
+            flex: 1;
+            min-width: 160px;
+            accent-color: var(--accent);
+        }
+        .control-row input[type="number"],
+        .control-row select {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 4px;
+            padding: 0.3rem 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+        .control-row .val {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent);
+            min-width: 80px;
+            text-align: right;
+        }
+        .btn {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.9rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .btn:hover { background: rgba(170,189,89,0.2); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn.secondary {
+            background: var(--bg-code);
+            color: var(--text-secondary);
+            border-color: var(--border);
+        }
+        .result-box {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-top: 0.75rem;
+        }
+        .result-box .line-label { color: var(--text-secondary); }
+        .result-box .line-val   { color: var(--accent); font-weight: 600; }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .metric {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 0.8rem;
+            text-align: center;
+        }
+        .metric .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .metric .metric-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        /* Canvas / SVG containers */
+        .canvas-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.25rem 0;
+            overflow-x: auto;
+        }
+        .canvas-wrap canvas,
+        .canvas-wrap svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        /* Small inline badge */
+        .badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 0.1rem 0.45rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: middle;
+            margin-left: 0.3rem;
+        }
+        .badge.ok    { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+        .badge.warn  { border-color: #e3b174; color: #e3b174; background: rgba(227,177,116,0.08); }
+        .badge.bad   { border-color: #de805a; color: #de805a; background: rgba(222,128,90,0.08); }
+
+
+        /* ── LLM Inference Simulators additions ── */
+        .canvas-wrap canvas { image-rendering: auto; display: block; width: 100%; height: auto; }
+        .canvas-wrap svg { max-width: 100%; height: auto; }
+        .ladder { display: grid; gap: 0.4rem; margin: 1.25rem 0; }
+        .ladder-row {
+            display: grid; grid-template-columns: 11rem 1fr 7.5rem; gap: 0.75rem; align-items: center;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+            padding: 0.55rem 0.85rem; font-size: 0.88rem;
+        }
+        .ladder-row .rung { font-family: var(--font-display); font-weight: 600; color: var(--accent); }
+        .ladder-row .speed { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); text-align: right; }
+        .res-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+        .res-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+        .res-list li:last-child { border-bottom: none; }
+        .res-list .what { color: var(--text-secondary); display: block; font-size: 0.86rem; margin-top: 0.15rem; }
+        .res-list a { color: var(--accent); text-decoration: none; }
+        .res-list a:hover { text-decoration: underline; }
+        .qa { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; margin: 0.6rem 0; padding: 0.2rem 1rem; }
+        .qa summary { cursor: pointer; padding: 0.6rem 0; font-weight: 600; }
+        .qa p, .qa ul { margin-bottom: 0.75rem; font-size: 0.92rem; }
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.4rem 1.25rem; }
+        .chart-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .chart-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+        .slide a { color: var(--accent); }
+        @media (max-width: 640px) {
+            .ladder-row { grid-template-columns: 1fr; gap: 0.2rem; }
+            .ladder-row .speed { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="series-label">LLM Inference Simulators &mdash; Presentation 11</div>
+    <h1>Role Primer &mdash; <span class="accent">Simulation &amp; Frameworks</span> Engineer</h1>
+    <p class="subtitle">The series applied to a real job: a photonic-computing architecture group's simulation and frameworks role, mapped requirement by requirement onto the decks, with the domain background (photonics, FHE) and a set of practice questions.</p>
+
+    <div class="tags">
+        <span class="tag">Job mapping</span>
+        <span class="tag">Photonic compute</span>
+        <span class="tag">FHE</span>
+        <span class="tag">Practice questions</span>
+        <span class="tag">First 90 days</span>
+    </div>
+
+    <div class="pipeline">
+        <span class="pipeline-step">Role</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">Domain</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">Skills</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">Questions</span>
+    </div>
+</header>
+
+<section class="slide" id="slide-00">
+    <div class="slide-number">00</div>
+    <h2>Topics We'll Cover</h2>
+    <ul class="contents-list">
+        <li><a href="#slide-01">The Role at a Glance</a></li>
+        <li><a href="#slide-02">Responsibilities, Mapped to This Series</a></li>
+        <li><a href="#slide-03">Required Skills: What to Be Ready to Show</a></li>
+        <li><a href="#slide-04">Preferred Skills</a></li>
+        <li><a href="#slide-05">Photonic Computing: A Primer</a></li>
+        <li><a href="#slide-06">What a Photonic-System Simulator Must Model</a></li>
+        <li><a href="#slide-07">Practice Questions: Simulation</a></li>
+        <li><a href="#slide-08">Practice Questions: Workloads, Frameworks and Process</a></li>
+        <li><a href="#slide-09">A Plausible First 90 Days</a></li>
+        <li><a href="#slide-10">Questions Worth Asking</a></li>
+        <li><a href="#slide-11">Checklist</a></li>
+    </ul>
+</section>
+
+<section class="slide" id="slide-01">
+    <div class="slide-number">01</div>
+    <h2>The Role at a Glance</h2>
+    <p>This deck applies the series to a real, publicly advertised position: <strong>Software Engineer (Simulation &amp; Frameworks)</strong> at <strong>Optalysys</strong>, a Leeds-based deep-tech company developing photonic computing technology. Everything here comes from the <a href="https://optalysys.com/wp-content/uploads/2026/08/Software-Engineer-Simulation-Frameworks-job-spec.pdf">public job specification</a> and general domain knowledge, not from inside knowledge of the company.</p>
+    <div class="diagram-grid cols-2">
+        <div class="diagram-panel accent-border">
+            <h4>From the specification</h4>
+            <ul>
+                <li><strong>Group:</strong> a newly formed Architecture group, architecting a novel photonic computing system.</li>
+                <li><strong>Target markets:</strong> AI and Fully Homomorphic Encryption (FHE).</li>
+                <li><strong>Level:</strong> Senior / Principal; permanent, full-time.</li>
+                <li><strong>Location:</strong> UK remote, with travel to UK and US hubs.</li>
+                <li><strong>Core:</strong> an in-house simulation system and its frameworks, across the software&ndash;hardware boundary, "enabling rapid bring-up, deep system insight of a novel compute architecture".</li>
+            </ul>
+        </div>
+        <div class="diagram-panel accent-border">
+            <h4>In this series' language</h4>
+            <ul>
+                <li>A <strong>discrete-event system simulator</strong> (SimPy is named) for a novel accelerator: decks 01, 02, 08.</li>
+                <li>That extracts <strong>latency, hot-spots and utilisation</strong>: deck 06.</li>
+                <li>That runs <strong>real applications through PyTorch, ONNX Runtime and HEIR</strong>: deck 09.</li>
+                <li>That supports <strong>pre-tape-out verification</strong> and <strong>bring-up</strong>: deck 01.</li>
+                <li>Delivered with <strong>specs, test plans, metrics and CI</strong>: deck 06.</li>
+                <li>And, for a photonic product above all, <strong>power and energy</strong> alongside speed: deck 07.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide" id="slide-02">
+    <div class="slide-number">02</div>
+    <h2>Responsibilities, Mapped to This Series</h2>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Responsibility (from the specification)</th><th>What it means in practice</th><th>Deck</th></tr>
+        <tr><td>Hands-on development of the in-house simulation environment of the photonics system</td><td>Owning DES engine code, component models, cost models, configuration</td><td>02, 05, 08</td></tr>
+        <tr><td>Build methods of extracting metrics: latency, hot-spots, utilisation</td><td>Probes, stage breakdowns, attribution, traces, reports</td><td>06</td></tr>
+        <tr><td>Work with other tools developers so real applications run on the simulator</td><td>Compiler and runtime interfaces; operator coverage</td><td>09</td></tr>
+        <tr><td>Integrate the simulator with PyTorch, ONNX Runtime and HEIR</td><td>Graph capture, backends, execution providers, MLIR lowering</td><td>09</td></tr>
+        <tr><td>Documenting and writing code to help pre-tape-out verification</td><td>Golden models, workload-derived tests, correlation with RTL</td><td>01, 06</td></tr>
+        <tr><td>Mentoring less experienced engineers</td><td>Code review, design patterns, testing discipline</td><td>02 (as teaching material)</td></tr>
+        <tr><td>Helping in system bring-up</td><td>The simulator as the first target for the software stack</td><td>01, 09</td></tr>
+        <tr><td>Defining and requirements capture for mission-mode software</td><td>Turning architecture behaviour into software requirements</td><td>06 (specs)</td></tr>
+        <tr><td>Defining, tracking and reporting engineering metrics</td><td>Correlation error, coverage, simulator speed, test health</td><td>06, 08</td></tr>
+        <tr><td>On-time delivery against agreed metrics and sign-off</td><td>Milestones tied to measurable criteria</td><td>06</td></tr>
+    </table>
+    </div>
+</section>
+
+<section class="slide" id="slide-03">
+    <div class="slide-number">03</div>
+    <h2>Required Skills: What to Be Ready to Show</h2>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Requirement</th><th>Be ready to demonstrate</th></tr>
+        <tr><td>10+ years of Python or C/C++</td><td>Idiomatic, tested, readable code; performance awareness (profiling, data structures); the C/C++&ndash;Python boundary</td></tr>
+        <tr><td>Python event simulators, e.g. SimPy</td><td>Processes, Resource/Store/Container, interrupts, determinism, validation against queueing theory; the companion simulator is a worked example</td></tr>
+        <tr><td>Strong SoC and memory architecture knowledge</td><td>Memory hierarchies, HBM/DDR behaviour, DMA, interconnects and NoCs, arbitration, back-pressure, roofline reasoning</td></tr>
+        <tr><td>Various testing frameworks</td><td>pytest (fixtures, parametrisation), property-based testing, golden tests; cocotb or UVM on the hardware side</td></tr>
+        <tr><td>Specifications, test plans and reports</td><td>The skeletons on deck 06, slide 11; examples of documents you have written</td></tr>
+        <tr><td>Communicating with expert and non-expert audiences</td><td>A one-paragraph answer first, evidence after; explaining a hot-spot to a manager and to an architect</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+        <div class="callout-label">Prepare evidence, not adjectives</div>
+        <p>For each row, have one concrete story (situation, what you did, measurable result) and, where possible, code you can show. A small, well-tested simulator with honest benchmarks is unusually strong evidence for this role.</p>
+    </div>
+</section>
+
+<section class="slide" id="slide-04">
+    <div class="slide-number">04</div>
+    <h2>Preferred Skills</h2>
+    <div class="diagram-grid cols-2">
+        <div class="diagram-panel accent-border">
+            <h4>Domain</h4>
+            <ul>
+                <li><strong>AI/ML, HPC or cryptography:</strong> LLM inference physics (deck 03), FHE basics (deck 09).</li>
+                <li><strong>Performance analysis:</strong> roofline, queueing, profiling, statistics (decks 03, 06, 08).</li>
+            </ul>
+        </div>
+        <div class="diagram-panel accent-border">
+            <h4>Engineering</h4>
+            <ul>
+                <li><strong>Rust:</strong> a likely route to a faster simulator core behind a Python API (PyO3), see deck 08.</li>
+                <li><strong>Jira:</strong> linking milestones to spec sections and metrics.</li>
+                <li><strong>Jenkins and CI/CD:</strong> per-push tests, nightly sweeps, golden-metric gates (deck 06 Jenkinsfile).</li>
+                <li><strong>Git:</strong> branching, review, reproducible runs stamped with the commit SHA.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide" id="slide-05">
+    <div class="slide-number">05</div>
+    <h2>Photonic Computing: A Primer</h2>
+    <p>Photonic computing uses light for part of the computation, typically the linear algebra or transforms, and electronics for the rest. The appeal is high throughput and potentially low energy for those operations; the challenges are at the boundaries.</p>
+    <div class="diagram-grid cols-2">
+        <div class="diagram-panel accent-border">
+            <h4>What optics does well</h4>
+            <ul>
+                <li><strong>Fourier transforms:</strong> a lens produces the Fourier transform of a field at its focal plane, in a single pass of light.</li>
+                <li><strong>Matrix&ndash;vector products:</strong> interferometer meshes or wavelength-multiplexed weight banks.</li>
+                <li><strong>Massive parallelism</strong> across space and wavelength, with propagation delay rather than clocked steps.</li>
+            </ul>
+        </div>
+        <div class="diagram-panel accent-border">
+            <h4>Where the difficulty lives</h4>
+            <ul>
+                <li><strong>Conversion:</strong> DACs and modulators (electrical to optical), photodetectors and ADCs (optical to electrical) cost energy, area and time.</li>
+                <li><strong>Precision and noise:</strong> analogue optics gives limited effective bits; exact arithmetic (as FHE needs) requires decomposition and correction schemes.</li>
+                <li><strong>Feeding the core:</strong> memory bandwidth and data movement must keep pace, or the optical core idles (the same lesson as decks 03 and 09).</li>
+                <li><strong>Calibration and stability</strong> over temperature and time.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="callout">
+        <div class="callout-label">Why the simulator is central</div>
+        <p>Whether a photonic system beats a GPU for a workload depends on all of the above together, which is why an architecture group needs a full-system simulator before committing to silicon. Read the company's own published material for its specific approach; this slide is general background.</p>
+    </div>
+</section>
+
+<section class="slide" id="slide-06">
+    <div class="slide-number">06</div>
+    <h2>What a Photonic-System Simulator Must Model</h2>
+    <p>An <strong>illustrative</strong> hybrid electro-optical accelerator, drawn to show what a DES model would contain. It is not any company's actual architecture.</p>
+    <div class="canvas-wrap">
+        <svg viewBox="0 0 720 250" width="720" height="250" xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .e  { fill: #2b2520; stroke: #aabd59; }
+                .o  { fill: rgba(151,205,198,0.15); stroke: #97cdc6; }
+                .c  { fill: rgba(227,177,116,0.15); stroke: #e3b174; }
+                .t  { fill: #efe8dc; font-family: 'Geist Mono', monospace; font-size: 10.5px; }
+                .d  { fill: #a2978b; font-family: 'Geist Mono', monospace; font-size: 9.5px; }
+                .a  { stroke: #aabd59; stroke-width: 1.3; fill: none; marker-end: url(#m10); }
+            </style>
+            <defs><marker id="m10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#aabd59"/></marker></defs>
+            <rect x="10" y="20" width="100" height="50" rx="4" class="e"/><text x="20" y="40" class="t">host / PCIe</text><text x="20" y="56" class="d">framework runtime</text>
+            <rect x="10" y="100" width="100" height="50" rx="4" class="e"/><text x="20" y="120" class="t">HBM / DDR</text><text x="20" y="136" class="d">channels, banks</text>
+            <rect x="140" y="60" width="100" height="50" rx="4" class="e"/><text x="150" y="80" class="t">DMA + SRAM</text><text x="150" y="96" class="d">tiles, buffers</text>
+            <rect x="270" y="60" width="90" height="50" rx="4" class="c"/><text x="280" y="80" class="t">DAC +</text><text x="280" y="96" class="t">modulators</text>
+            <rect x="390" y="50" width="110" height="70" rx="4" class="o"/><text x="400" y="75" class="t">optical core</text><text x="400" y="91" class="d">transform / MVM</text><text x="400" y="105" class="d">precision, noise</text>
+            <rect x="530" y="60" width="90" height="50" rx="4" class="c"/><text x="540" y="80" class="t">detectors</text><text x="540" y="96" class="t">+ ADC</text>
+            <rect x="530" y="150" width="170" height="50" rx="4" class="e"/><text x="540" y="170" class="t">digital post-processing</text><text x="540" y="186" class="d">mod reduce, accumulate, NTT fix-up</text>
+            <rect x="140" y="170" width="200" height="40" rx="4" class="e"/><text x="150" y="194" class="t">on-chip interconnect / NoC</text>
+            <path class="a" d="M110 45 L140 75"/><path class="a" d="M110 125 L140 95"/><path class="a" d="M240 85 L268 85"/>
+            <path class="a" d="M360 85 L388 85"/><path class="a" d="M500 85 L528 85"/><path class="a" d="M575 110 L590 148"/>
+            <path class="a" d="M530 185 L342 190"/><path class="a" d="M190 170 L190 112"/>
+            <text x="10" y="235" class="d">each box: a SimPy process or resource with a cost model; each arrow: a link with bandwidth, latency and back-pressure</text>
+        </svg>
+    </div>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Question the architects will ask</th><th>What the simulator needs</th></tr>
+        <tr><td>Is the optical core kept busy?</td><td>Utilisation and stall attribution (memory, DMA, conversion)</td></tr>
+        <tr><td>How many converters, at what rate and precision?</td><td>Converter models in the cost path; precision effects in a functional model</td></tr>
+        <tr><td>How large should on-chip SRAM be?</td><td>Tiling and reuse models; traffic counts per level</td></tr>
+        <tr><td>What latency and throughput for an LLM layer, or for FHE bootstrapping?</td><td>Workloads lowered from PyTorch, ONNX and HEIR</td></tr>
+        <tr><td>Where is the hot-spot as the design changes?</td><td>Stage breakdowns and what-if sensitivity sweeps</td></tr>
+        <tr><td>What does a token or a bootstrapping operation cost in joules, and how much of it is lasers, tuning and converters?</td><td>Static and per-conversion energy models; energy breakdowns (deck 07)</td></tr>
+    </table>
+    </div>
+</section>
+
+<section class="slide" id="slide-07">
+    <div class="slide-number">07</div>
+    <h2>Practice Questions: Simulation</h2>
+    <p>Answer aloud before opening each outline.</p>
+    <details class="qa"><summary>Model a DMA engine feeding a compute unit through a bounded FIFO in SimPy. How do you show back-pressure?</summary>
+        <p>DMA and compute as processes; the FIFO as <code>simpy.Store(capacity=k)</code>; memory channels as a <code>Resource</code>. <code>yield fifo.put(tile)</code> blocks when full, which is the back-pressure. Measure DMA stall time on <code>put</code> and compute stall on <code>get</code>; sweep k to find where throughput saturates. (Deck 02, slide 07.)</p></details>
+    <details class="qa"><summary>How do you validate a performance model of hardware that does not exist yet?</summary>
+        <ul><li>Verification ladder: unit, invariants, analytic checks (queueing results, Little's law), behavioural expectations.</li>
+        <li>Validate the <em>method</em> on known hardware first: model a GPU, compare with measured vLLM or Vidur numbers.</li>
+        <li>Correlate against RTL or emulation block by block as they become available, and track the correlation error as a metric.</li>
+        <li>State assumptions explicitly and run sensitivity sweeps on the uncertain parameters. (Decks 01 and 06.)</li></ul></details>
+    <details class="qa"><summary>How does a software-level simulator relate to RTL simulation?</summary>
+        <p>Different questions (what to build versus did we build it right) at different times. The model is the executable spec and golden reference (scoreboards via DPI-C or cocotb); RTL cycle counts calibrate the model; workload traces become directed tests; co-simulation mixes RTL islands into the system model. (Deck 01, slides 06&ndash;08.)</p></details>
+    <details class="qa"><summary>A SimPy simulation is too slow. What do you do, in order?</summary>
+        <p>Profile. Reduce events (coarser granularity, macro-steps). Make events cheaper (incremental state, lazy bookkeeping, hoisting). Cut probe cost. Parallelise across runs. Do fewer runs (analytic bounds, bisection, Bayesian optimisation, common random numbers). Only then a compiled core or PDES. Prove each step exact with differential tests. (Deck 08.)</p></details>
+    <details class="qa"><summary>Two transfers share a link. FCFS or processor sharing, and does it matter?</summary>
+        <p>Same throughput and utilisation; different latency distributions (10/20 ms against 20/20 ms for two 10 ms transfers). It matters for tail metrics. Choose from the hardware's actual arbitration, document it, and test it. (Deck 02, slide 08.)</p></details>
+    <details class="qa"><summary>How do you identify a hot-spot, and why is "highest utilisation" not enough?</summary>
+        <p>Batched resources look 100% busy at low efficiency. Use a stage breakdown that sums to end-to-end latency, take the largest waiting stage, map it to its owning resource, and confirm with a what-if sensitivity run. (Deck 06, slide 04.)</p></details>
+</section>
+
+<section class="slide" id="slide-08">
+    <div class="slide-number">08</div>
+    <h2>Practice Questions: Workloads, Frameworks and Process</h2>
+    <details class="qa"><summary>Why is LLM decode memory-bound, and what does that imply for a photonic accelerator?</summary>
+        <p>Each step reads every weight and all the KV cache to produce one token per sequence: arithmetic intensity is about the batch size, far below the ridge point. Faster matmul alone barely helps decode; the design must address memory bandwidth, capacity and data movement. Prefill is compute-bound and benefits directly. (Deck 03.)</p></details>
+    <details class="qa"><summary>How would you get real PyTorch models running on the simulator?</summary>
+        <p>Start with a <code>TorchDispatchMode</code> trace on the meta device (cheap, any model); then <code>torch.export</code> graphs for the compiler path; a <code>torch.compile</code> backend for one-line user adoption; a PrivateUse1 device for functional bring-up. Track operator coverage as a metric. (Deck 09.)</p></details>
+    <details class="qa"><summary>What is an NTT, and why does FHE need so many?</summary>
+        <p>The number-theoretic transform is the FFT over a finite field. FHE ciphertexts are polynomials of degree 2<sup>13</sup>&ndash;2<sup>17</sup> in RNS form, and polynomial multiplication, key switching and bootstrapping all run through NTTs, so NTT throughput, together with the memory traffic of ciphertexts and keys, dominates FHE cost. (Deck 09.)</p></details>
+    <details class="qa"><summary>Where does HEIR fit, and how would the simulator consume it?</summary>
+        <p>HEIR is an MLIR-based FHE compiler: secret-annotated programs are lowered to scheme dialects (CKKS, BGV, CGGI) and then to polynomial and modular arithmetic, then to backends. A hardware team lowers into its own dialect and emits an operation stream (NTTs, modular arithmetic, key switches) for the simulator, using a CPU backend such as OpenFHE as the functional oracle. (Deck 09.)</p></details>
+    <details class="qa"><summary>How would you model power in a performance simulator, and what would you do with it?</summary>
+        <p>Price the counts the simulator already has: static power &times; time, energy per FLOP or conversion, per byte of memory traffic, per bit on links. Add DVFS and power caps as a third roof on step time. Report average and peak power, joules per token and the static/compute/memory/link split. Calibrate coefficients by regression on measured power (DCGM) or from RTL power analysis driven by the simulator's workload traces. Use it to find free savings (memory-bound phases), the energy-optimal cap, and how load affects energy per token through static power. (Deck 07.)</p></details>
+    <details class="qa"><summary>Define engineering metrics that show progress towards sign-off.</summary>
+        <ul><li>Correlation error against RTL or emulation per workload, with a target.</li><li>Operator and model coverage for each framework path.</li><li>Test pass rate, coverage, and golden-metric stability.</li><li>Simulator speed (simulated seconds per wall-clock second).</li><li>Open accuracy issues by severity; milestone burn-down in Jira. (Deck 06.)</li></ul></details>
+    <details class="qa"><summary>How do you make simulation results reproducible and reviewable?</summary>
+        <p>Configuration as data; seeds per component; outputs stamped with config hash and git SHA; deterministic tie-breaking; warm-up deletion; replications with confidence intervals; common random numbers for comparisons; CI that re-runs golden configurations. (Decks 02 and 06.)</p></details>
+</section>
+
+<section class="slide" id="slide-09">
+    <div class="slide-number">09</div>
+    <h2>A Plausible First 90 Days</h2>
+    <p>A sketch to discuss, not a prescription: the right plan depends on where the in-house simulator is today.</p>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Phase</th><th>Goals</th><th>Visible output</th></tr>
+        <tr><td><strong>Days 1&ndash;30: learn and measure</strong></td><td>Understand the architecture and the simulator; run it on the reference workloads; profile it; read the test suite</td><td>A short written baseline: speed, coverage, test health, known gaps</td></tr>
+        <tr><td><strong>Days 31&ndash;60: strengthen the core</strong></td><td>Add or harden metrics (stage breakdown, hot-spots, Chrome traces); add invariant and analytic tests; wire golden metrics into CI</td><td>A metrics report on one real workload; green CI gate</td></tr>
+        <tr><td><strong>Days 61&ndash;90: connect and correlate</strong></td><td>One framework path end to end (for example a dispatch-mode trace from PyTorch); a correlation plan with the RTL team; an engineering-metrics dashboard</td><td>A real model on the simulator; correlation targets agreed; metrics tracked weekly</td></tr>
+    </table>
+    </div>
+</section>
+
+<section class="slide" id="slide-10">
+    <div class="slide-number">10</div>
+    <h2>Questions Worth Asking</h2>
+    <div class="diagram-grid cols-2">
+        <div class="diagram-panel accent-border">
+            <h4>About the simulator</h4>
+            <ul>
+                <li>What abstraction level is it today, and what is it expected to answer by tape-out?</li>
+                <li>SimPy throughout, or a compiled core planned (C++ or Rust)?</li>
+                <li>How is it validated now, and against what?</li>
+                <li>Is there a functional (bit-accurate) model as well as a timing model?</li>
+            </ul>
+        </div>
+        <div class="diagram-panel accent-border">
+            <h4>About the toolchain and the team</h4>
+            <ul>
+                <li>Which framework path comes first: PyTorch, ONNX Runtime or HEIR?</li>
+                <li>How do simulation, compiler, RTL and verification teams hand off to each other?</li>
+                <li>What does sign-off look like for the simulator's predictions?</li>
+                <li>How is the balance between AI and FHE workloads expected to evolve?</li>
+                <li>How are power and energy targets set, and how is the simulator's power model calibrated?</li>
+                <li>What CI and compute infrastructure exists for sweeps?</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="slide" id="slide-11">
+    <div class="slide-number">11</div>
+    <h2>Checklist</h2>
+    <ul>
+        <li>Can you write a SimPy model with Resource, Store, Container and interrupts from memory? (Deck 02)</li>
+        <li>Can you derive decode and prefill step times and KV sizes on a whiteboard? (Deck 03)</li>
+        <li>Can you name the main LLM simulators and what each is for? (Deck 04)</li>
+        <li>Can you explain disaggregation and its KV-transfer cost, and demo the simulator? (Deck 05)</li>
+        <li>Can you describe hot-spot attribution, CIs, CRN and the verification ladder? (Deck 06)</li>
+        <li>Can you explain static against dynamic power, DVFS, power caps and joules per token, with numbers? (Deck 07)</li>
+        <li>Can you list acceleration techniques in order, with measured examples? (Deck 08)</li>
+        <li>Can you sketch PyTorch, ONNX Runtime and HEIR integration paths, and explain NTTs? (Deck 09)</li>
+        <li>Have you read the company's public material on photonic computing and FHE? (Deck 10)</li>
+        <li>Do you have one evidence story per required skill? (Slide 03)</li>
+    </ul>
+</section>
+
+<!-- ════════════════════════════════════ Footer ════════════════════════════════════ -->
+<footer class="footer">
+    <p>Part of the <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_Inference_Simulators">LLM Inference Simulators series</a> &middot; code: <a href="https://github.com/BrendanJamesLynskey/Disaggregated_Inference_Sim">Disaggregated_Inference_Sim</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;"><a href="https://brendanjameslynskey.github.io/InfSim_10_Further_Learning/">&larr; 10 Further Learning: Books, Courses, Papers, Tools</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem;"><a href="https://github.com/BrendanJamesLynskey/LLMs#hardware--inference">Back to the LLMs hub</a></p>
+</footer>
+
+<script>
+    // Smooth scroll for TOC links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Subtle fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.slide').forEach(slide => {
+        slide.style.opacity = '0';
+        slide.style.transform = 'translateY(30px)';
+        slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(slide);
+    });
+</script>
+
+</body>
+</html>
