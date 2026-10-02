@@ -782,6 +782,11 @@
             .ladder-row { grid-template-columns: 1fr; gap: 0.2rem; }
             .ladder-row .speed { text-align: left; }
         }
+        .concepts { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 0.75rem 1rem; margin-top: 1.25rem; font-size: 0.88rem; }
+        .concepts p { margin: 0 0 0.4rem; color: var(--text-secondary); }
+        .concepts .chips { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; }
+        .concepts .chips a { border: 1px solid var(--border); border-radius: 999px; padding: 0.1rem 0.6rem; text-decoration: none; font-size: 0.82rem; }
+        .concepts .chips a:hover { border-color: var(--accent); }
     </style>
 </head>
 <body>
@@ -820,12 +825,17 @@
         <li><a href="#slide-04">Preferred Skills</a></li>
         <li><a href="#slide-05">Photonic Computing: A Primer</a></li>
         <li><a href="#slide-06">What a Photonic-System Simulator Must Model</a></li>
-        <li><a href="#slide-07">Practice Questions: Simulation</a></li>
-        <li><a href="#slide-08">Practice Questions: Workloads, Frameworks and Process</a></li>
-        <li><a href="#slide-09">A Plausible First 90 Days</a></li>
-        <li><a href="#slide-10">Questions Worth Asking</a></li>
-        <li><a href="#slide-11">Checklist</a></li>
+        <li><a href="#slide-07">The FHE Half: Findings and Questions</a></li>
+        <li><a href="#slide-08">Practice Questions: Simulation</a></li>
+        <li><a href="#slide-09">Practice Questions: Workloads, Frameworks and Process</a></li>
+        <li><a href="#slide-10">A Plausible First 90 Days</a></li>
+        <li><a href="#slide-11">Questions Worth Asking</a></li>
+        <li><a href="#slide-12">Checklist</a></li>
     </ul>
+    <div class="concepts">
+        <p><strong>Concepts used here, and where they are explained.</strong> Each links to its <a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#glossary">series glossary</a> entry: a short explanation, then links to the slides that explain it in depth, in this series, the Local LLM Hosting and Key Publications decks, or the FHE Accelerator Simulators series.</p>
+        <div class="chips"><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-simpy" title="A small, pure-Python DES library: Environment, processes, timeouts, events, Resource, Container, Store and interrupts. It has no built-in statistics or tracing; the probes are yours to design.">SimPy</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-hotspot" title="Finding where speeding things up would help most. A stage breakdown that sums exactly to each request&#x27;s latency, the largest waiting stage mapped to the resource that owns it, confirmed by what-if sensitivity runs.">Hot-spot attribution</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-mfu" title="Busy fraction says how often a resource works; model FLOPs and bandwidth utilisation say how much of its capability it uses. A continuous-batching decode engine is 100% busy at 4% MFU and about 77% MBU.">Utilisation, MFU and MBU</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-cosim" title="The software model is the executable specification and the golden reference (a scoreboard in the RTL testbench). RTL cycle counts calibrate the model, workload traces become directed tests, and co-simulation embeds RTL blocks in the system model.">RTL simulation, co-simulation and golden models</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-correlation" title="Fitting a model&#x27;s few free coefficients to measurements (or RTL), then tracking its error on workloads it was not fitted to. The correlation report is the deliverable that makes predictions trustworthy.">Calibration and correlation</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-ladder" title="Layers of evidence: unit tests against hand calculations, invariants, analytic checks, behavioural expectations, property-based tests, differential tests and, finally, correlation against measurement.">The verification ladder</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-powermodel" title="Static watts × time, plus pJ per FLOP, per HBM byte and per link bit, applied to the counts the roofline already has. Coefficients are illustrative and calibrated by regressing measured power on FLOP and byte rates.">The simulator's power model</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-photonicpower" title="Optical operations are cheap, but lasers and thermal tuning burn static power, and every DAC/ADC conversion costs energy that grows with resolution. Gains need high reuse per conversion and a busy core.">Power in photonic compute</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-fhe" title="Computing on encrypted data. Ciphertexts are large RNS polynomials; the work is NTTs, modular arithmetic and key switching, and the data movement of ciphertexts and keys dominates.">Fully homomorphic encryption (FHE)</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-bootstrapping" title="Refreshing a CKKS ciphertext that has run out of levels by evaluating decryption homomorphically. Dominated by rotations and their key switches, so evaluation-key traffic often makes it memory-bound.">CKKS bootstrapping</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-ntt" title="The FFT over a finite field, used for polynomial multiplication in FHE. The kernel optical transform engines target.">Number-theoretic transform (NTT)</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-heir" title="Google&#x27;s MLIR-based FHE compiler: secret-annotated programs are lowered through scheme dialects to polynomial arithmetic and then to libraries such as OpenFHE, or to hardware.">HEIR</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-export" title="Capturing a PyTorch model ahead of time as one graph of ATen operators with fake-tensor shapes on every node; run_decompositions() lowers it to the smaller Core ATen set a cost model can cover.">torch.export and FX graphs</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-onnxrt" title="ONNX is a framework-neutral graph format; ONNX Runtime partitions graphs between execution providers, each claiming the nodes it can run, with fallback to the CPU.">ONNX and ONNX Runtime execution providers</a><a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-ci" title="Run tests on every push and sweeps nightly (Jenkins or similar); fail the build if golden metrics drift; track correlation error, coverage, simulator speed and test health as engineering metrics.">CI, golden metrics and engineering metrics</a></div>
+    </div>
 </section>
 
 <section class="slide" id="slide-01">
@@ -852,6 +862,7 @@
                 <li>That supports <strong>pre-tape-out verification</strong> and <strong>bring-up</strong>: deck 01.</li>
                 <li>Delivered with <strong>specs, test plans, metrics and CI</strong>: deck 06.</li>
                 <li>And, for a photonic product above all, <strong>power and energy</strong> alongside speed: deck 07.</li>
+                <li>The <strong>FHE half</strong> of the role: the sister series <a href="https://brendanjameslynskey.github.io/FHE_Hub_Accelerator_Simulators/">FHE Accelerator Simulators</a> (slide 07).</li>
             </ul>
         </div>
     </div>
@@ -866,7 +877,7 @@
         <tr><td>Hands-on development of the in-house simulation environment of the photonics system</td><td>Owning DES engine code, component models, cost models, configuration</td><td>02, 05, 08</td></tr>
         <tr><td>Build methods of extracting metrics: latency, hot-spots, utilisation</td><td>Probes, stage breakdowns, attribution, traces, reports</td><td>06</td></tr>
         <tr><td>Work with other tools developers so real applications run on the simulator</td><td>Compiler and runtime interfaces; operator coverage</td><td>09</td></tr>
-        <tr><td>Integrate the simulator with PyTorch, ONNX Runtime and HEIR</td><td>Graph capture, backends, execution providers, MLIR lowering</td><td>09</td></tr>
+        <tr><td>Integrate the simulator with PyTorch, ONNX Runtime and HEIR</td><td>Graph capture, backends, execution providers, MLIR lowering; a HEIR front end for FHE programs</td><td>09; FHE 03</td></tr>
         <tr><td>Documenting and writing code to help pre-tape-out verification</td><td>Golden models, workload-derived tests, correlation with RTL</td><td>01, 06</td></tr>
         <tr><td>Mentoring less experienced engineers</td><td>Code review, design patterns, testing discipline</td><td>02 (as teaching material)</td></tr>
         <tr><td>Helping in system bring-up</td><td>The simulator as the first target for the software stack</td><td>01, 09</td></tr>
@@ -993,6 +1004,30 @@
 
 <section class="slide" id="slide-07">
     <div class="slide-number">07</div>
+    <h2>The FHE Half: Findings and Questions</h2>
+    <p>The job's second target market is fully homomorphic encryption. The sister series <a href="https://brendanjameslynskey.github.io/FHE_Hub_Accelerator_Simulators/">FHE Accelerator Simulators</a> applies the same methods (SimPy, hot-spots, power under a TDP, a bit-exact JavaScript port) to an accelerator running CKKS bootstrapping, with recorded OpenFHE traces and HEIR-compiled programs. Its results give concrete, checkable material for an interview.</p>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Finding (ARK-class design unless stated)</th><th>Number</th><th>Where</th></tr>
+        <tr><td>A baseline bootstrap is memory-bound: evaluation keys are the largest share of HBM traffic</td><td>13.94 ms; keys 6.74 of 12.44 GB</td><td><a href="https://brendanjameslynskey.github.io/FHESim_05_Results_and_Design_Space/">FHE 05</a></td></tr>
+        <tr><td>SlotToCoeff-first ordering (OpenFHE's sparse-slot path)</td><td>13.94 &rarr; 11.51 ms; keys 6.74 &rarr; 5.73 GB</td><td><a href="https://brendanjameslynskey.github.io/FHESim_02_Anatomy_of_Bootstrapping/">FHE 02</a>, <a href="https://brendanjameslynskey.github.io/FHESim_05_Results_and_Design_Space/">05</a></td></tr>
+        <tr><td>All algorithmic techniques together (Min-KS, seeded keys, on-the-fly plaintexts, SlotToCoeff first) turn it MAC-bound</td><td>5.42 ms; HBM 12.44 &rarr; 0.72 GB</td><td><a href="https://brendanjameslynskey.github.io/FHESim_05_Results_and_Design_Space/">FHE 05</a></td></tr>
+        <tr><td>Replaying a recorded OpenFHE bootstrap trace predicts the measured CPU time (scheme model alone: &minus;30%)</td><td>within 11%</td><td><a href="https://brendanjameslynskey.github.io/FHESim_03_Simulating_an_FHE_Accelerator/">FHE 03</a></td></tr>
+        <tr><td>A HEIR-compiled CNN (LoLa) through the HEIR front end reproduces HEIR's own OpenFHE output</td><td>55 rotations, 41 rotation keys, 2 relinearisations, exactly</td><td><a href="https://brendanjameslynskey.github.io/FHESim_03_Simulating_an_FHE_Accelerator/">FHE 03</a></td></tr>
+    </table>
+    </div>
+    <details class="qa"><summary>Why is CKKS bootstrapping memory-bound on a compute-rich accelerator, and what fixes it?</summary>
+        <p>Every rotation and relinearisation needs a key switch with its own evaluation key, tens to hundreds of MB at N = 2<sup>16</sup>, so streaming keys from HBM dominates. Fixes: reuse keys across rotations (Min-KS, hoisting), generate half of each key on chip from a seed, generate plaintexts on the fly, reorder the bootstrap (SlotToCoeff first), and size the scratchpad so keys stay on chip. In the sister series these move the bottleneck from HBM to the MAC lanes. (<a href="https://brendanjameslynskey.github.io/FHESim_01_FHE_for_Hardware_Engineers/">FHE 01</a>, <a href="https://brendanjameslynskey.github.io/FHESim_05_Results_and_Design_Space/">05</a>.)</p></details>
+    <details class="qa"><summary>How would you validate an FHE accelerator model before any hardware exists?</summary>
+        <p>Check operation counts against analytical formulas per bootstrap stage; record the real kernel stream from an instrumented library (OpenFHE) and compare structure; replay that trace on a CPU-like configuration and compare with measured time; run compiler-generated programs (HEIR) and require the same rotations and keys as the compiler's own library output; keep a bit-exact twin for differential tests. (<a href="https://brendanjameslynskey.github.io/FHESim_03_Simulating_an_FHE_Accelerator/">FHE 03</a>; deck 06.)</p></details>
+    <details class="qa"><summary>When does an optical NTT engine help, and when does it not?</summary>
+        <p>Only when the design is NTT-bound: on a memory-bound configuration a faster transform moves nothing. Exact modular NTTs must be mapped onto analogue transforms by splitting coefficients into digits, which multiplies conversions, and every conversion costs energy that grows with resolution. Answer with the bound attribution first, then the precision and conversion budget. (<a href="https://brendanjameslynskey.github.io/FHESim_04_Optical_NTT_Engines/">FHE 04</a>; deck 07.)</p></details>
+    <details class="qa"><summary>Where does HEIR meet the simulator?</summary>
+        <p>HEIR lowers a secret-annotated program to a CKKS-dialect program with explicit rotations, relinearisations, rescales and bootstraps; a front end reads that and emits the simulator's operation trace. Cost feedback into HEIR's choices (for example where to place bootstraps) is the natural next step. (<a href="https://brendanjameslynskey.github.io/FHESim_03_Simulating_an_FHE_Accelerator/">FHE 03</a>; deck 09.)</p></details>
+</section>
+
+<section class="slide" id="slide-08">
+    <div class="slide-number">08</div>
     <h2>Practice Questions: Simulation</h2>
     <p>Answer aloud before opening each outline.</p>
     <details class="qa"><summary>Model a DMA engine feeding a compute unit through a bounded FIFO in SimPy. How do you show back-pressure?</summary>
@@ -1012,8 +1047,8 @@
         <p>Batched resources look 100% busy at low efficiency. Use a stage breakdown that sums to end-to-end latency, take the largest waiting stage, map it to its owning resource, and confirm with a what-if sensitivity run. (Deck 06, slide 04.)</p></details>
 </section>
 
-<section class="slide" id="slide-08">
-    <div class="slide-number">08</div>
+<section class="slide" id="slide-09">
+    <div class="slide-number">09</div>
     <h2>Practice Questions: Workloads, Frameworks and Process</h2>
     <details class="qa"><summary>Why is LLM decode memory-bound, and what does that imply for a photonic accelerator?</summary>
         <p>Each step reads every weight and all the KV cache to produce one token per sequence: arithmetic intensity is about the batch size, far below the ridge point. Faster matmul alone barely helps decode; the design must address memory bandwidth, capacity and data movement. Prefill is compute-bound and benefits directly. (Deck 03.)</p></details>
@@ -1031,8 +1066,8 @@
         <p>Configuration as data; seeds per component; outputs stamped with config hash and git SHA; deterministic tie-breaking; warm-up deletion; replications with confidence intervals; common random numbers for comparisons; CI that re-runs golden configurations. (Decks 02 and 06.)</p></details>
 </section>
 
-<section class="slide" id="slide-09">
-    <div class="slide-number">09</div>
+<section class="slide" id="slide-10">
+    <div class="slide-number">10</div>
     <h2>A Plausible First 90 Days</h2>
     <p>A sketch to discuss, not a prescription: the right plan depends on where the in-house simulator is today.</p>
     <div class="table-wrap">
@@ -1045,8 +1080,8 @@
     </div>
 </section>
 
-<section class="slide" id="slide-10">
-    <div class="slide-number">10</div>
+<section class="slide" id="slide-11">
+    <div class="slide-number">11</div>
     <h2>Questions Worth Asking</h2>
     <div class="diagram-grid cols-2">
         <div class="diagram-panel accent-border">
@@ -1066,14 +1101,15 @@
                 <li>What does sign-off look like for the simulator's predictions?</li>
                 <li>How is the balance between AI and FHE workloads expected to evolve?</li>
                 <li>How are power and energy targets set, and how is the simulator's power model calibrated?</li>
+                <li>Which FHE schemes, parameter sets and workloads (bootstrapping, encrypted inference) matter most to the roadmap?</li>
                 <li>What CI and compute infrastructure exists for sweeps?</li>
             </ul>
         </div>
     </div>
 </section>
 
-<section class="slide" id="slide-11">
-    <div class="slide-number">11</div>
+<section class="slide" id="slide-12">
+    <div class="slide-number">12</div>
     <h2>Checklist</h2>
     <ul>
         <li>Can you write a SimPy model with Resource, Store, Container and interrupts from memory? (Deck 02)</li>
@@ -1084,6 +1120,7 @@
         <li>Can you explain static against dynamic power, DVFS, power caps and joules per token, with numbers? (Deck 07)</li>
         <li>Can you list acceleration techniques in order, with measured examples? (Deck 08)</li>
         <li>Can you sketch PyTorch, ONNX Runtime and HEIR integration paths, and explain NTTs? (Deck 09)</li>
+        <li>Can you explain why CKKS bootstrapping is memory-bound, name the fixes, and say how you would validate an FHE accelerator model? (Slide 07; FHE series)</li>
         <li>Have you read the company's public material on photonic computing and FHE? (Deck 10)</li>
         <li>Do you have one evidence story per required skill? (Slide 03)</li>
     </ul>
@@ -1091,7 +1128,7 @@
 
 <!-- ════════════════════════════════════ Footer ════════════════════════════════════ -->
 <footer class="footer">
-    <p>Part of the <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_Inference_Simulators">LLM Inference Simulators series</a> &middot; code: <a href="https://github.com/BrendanJamesLynskey/Disaggregated_Inference_Sim">Disaggregated_Inference_Sim</a></p>
+    <p>Part of the <a href="https://github.com/BrendanJamesLynskey/LLM_Hub_Inference_Simulators">LLM Inference Simulators series</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#glossary">glossary: every concept and where it is explained</a> &middot; code: <a href="https://github.com/BrendanJamesLynskey/Disaggregated_Inference_Sim">Disaggregated_Inference_Sim</a></p>
     <p style="margin-top: 0.5rem; font-size: 0.8rem;"><a href="https://brendanjameslynskey.github.io/InfSim_10_Further_Learning/">&larr; 10 Further Learning: Books, Courses, Papers, Tools</a></p>
     <p style="margin-top: 0.5rem; font-size: 0.8rem;"><a href="https://github.com/BrendanJamesLynskey/LLMs#hardware--inference">Back to the LLMs hub</a></p>
 </footer>
