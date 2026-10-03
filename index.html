@@ -999,7 +999,8 @@
         <tr><th>Question the architects will ask</th><th>What the simulator needs</th></tr>
         <tr><td>Is the optical core kept busy?</td><td>Utilisation and stall attribution (memory, DMA, conversion)</td></tr>
         <tr><td>How many converters, at what rate and precision?</td><td>Converter models in the cost path; precision effects in a functional model</td></tr>
-        <tr><td>How large should on-chip SRAM be?</td><td>Tiling and reuse models; traffic counts per level</td></tr>
+        <tr><td>How large should on-chip SRAM be?</td><td>Tiling and reuse models; traffic counts per level; and its area, since SRAM is bought in mm&sup2; (<a href="https://brendanjameslynskey.github.io/SimEng_13_PPA_Tradeoffs/#slide-10">Toolkit 13</a>)</td></tr>
+        <tr><td>Is the design worth its silicon? Which trade-off between speed, power and area should we make?</td><td>Performance, power and area reported together, an area and yield model, and Pareto fronts over all three (<a href="https://brendanjameslynskey.github.io/SimEng_13_PPA_Tradeoffs/">Toolkit 13</a>)</td></tr>
         <tr><td>What latency and throughput for an LLM layer, or for FHE bootstrapping?</td><td>Workloads lowered from PyTorch, ONNX and HEIR</td></tr>
         <tr><td>Where is the hot-spot as the design changes?</td><td>Stage breakdowns and what-if sensitivity sweeps</td></tr>
         <tr><td>What does a token or a bootstrapping operation cost in joules, and how much of it is lasers, tuning and converters?</td><td>Static and per-conversion energy models; energy breakdowns (deck 07)</td></tr>
