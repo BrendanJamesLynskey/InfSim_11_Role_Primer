@@ -871,19 +871,20 @@
 <section class="slide" id="slide-02">
     <div class="slide-number">02</div>
     <h2>Responsibilities, Mapped to This Series</h2>
+    <p>The last column points to the <a href="https://brendanjameslynskey.github.io/SimEng_Hub_Toolkit/">Simulation Engineering Toolkit</a>, a companion series that fills the remaining gaps with decks and tested code.</p>
     <div class="table-wrap">
     <table>
-        <tr><th>Responsibility (from the specification)</th><th>What it means in practice</th><th>Deck</th></tr>
-        <tr><td>Hands-on development of the in-house simulation environment of the photonics system</td><td>Owning DES engine code, component models, cost models, configuration</td><td>02, 05, 08</td></tr>
-        <tr><td>Build methods of extracting metrics: latency, hot-spots, utilisation</td><td>Probes, stage breakdowns, attribution, traces, reports</td><td>06</td></tr>
-        <tr><td>Work with other tools developers so real applications run on the simulator</td><td>Compiler and runtime interfaces; operator coverage</td><td>09</td></tr>
-        <tr><td>Integrate the simulator with PyTorch, ONNX Runtime and HEIR</td><td>Graph capture, backends, execution providers, MLIR lowering; a HEIR front end for FHE programs</td><td>09; FHE 03</td></tr>
-        <tr><td>Documenting and writing code to help pre-tape-out verification</td><td>Golden models, workload-derived tests, correlation with RTL</td><td>01, 06</td></tr>
-        <tr><td>Mentoring less experienced engineers</td><td>Code review, design patterns, testing discipline</td><td>02 (as teaching material)</td></tr>
-        <tr><td>Helping in system bring-up</td><td>The simulator as the first target for the software stack</td><td>01, 09</td></tr>
-        <tr><td>Defining and requirements capture for mission-mode software</td><td>Turning architecture behaviour into software requirements</td><td>06 (specs)</td></tr>
-        <tr><td>Defining, tracking and reporting engineering metrics</td><td>Correlation error, coverage, simulator speed, test health</td><td>06, 08</td></tr>
-        <tr><td>On-time delivery against agreed metrics and sign-off</td><td>Milestones tied to measurable criteria</td><td>06</td></tr>
+        <tr><th>Responsibility (from the specification)</th><th>What it means in practice</th><th>Deck</th><th>Toolkit deck and code</th></tr>
+        <tr><td>Hands-on development of the in-house simulation environment of the photonics system</td><td>Owning DES engine code, component models, cost models, configuration</td><td>02, 05, 08</td><td><a href="https://brendanjameslynskey.github.io/SimEng_01_Rust_for_Simulation_Engineers/">01</a>, <a href="https://brendanjameslynskey.github.io/SimEng_02_Rust_Python_PyO3/">02</a>, <a href="https://brendanjameslynskey.github.io/SimEng_03_SystemC_TLM_Models/">03</a>; <a href="https://github.com/BrendanJamesLynskey/Rust_DES_Kernel">Rust_DES_Kernel</a>, <a href="https://github.com/BrendanJamesLynskey/SystemC_Accelerator_Model">SystemC_Accelerator_Model</a></td></tr>
+        <tr><td>Build methods of extracting metrics: latency, hot-spots, utilisation</td><td>Probes, stage breakdowns, attribution, traces, reports</td><td>06</td><td><a href="https://brendanjameslynskey.github.io/SimEng_11_Performance_Analysis/">11</a> (profiling the simulators themselves)</td></tr>
+        <tr><td>Work with other tools developers so real applications run on the simulator</td><td>Compiler and runtime interfaces; operator coverage</td><td>09</td><td><a href="https://brendanjameslynskey.github.io/SimEng_10_PyTorch_ONNX_Frontends/">10</a>; <a href="https://github.com/BrendanJamesLynskey/Torch_Sim_Frontend">Torch_Sim_Frontend</a></td></tr>
+        <tr><td>Integrate the simulator with PyTorch, ONNX Runtime and HEIR</td><td>Graph capture, backends, execution providers, MLIR lowering; a HEIR front end for FHE programs</td><td>09; FHE 03</td><td><a href="https://brendanjameslynskey.github.io/SimEng_10_PyTorch_ONNX_Frontends/">10</a>: four working front ends; <a href="https://github.com/BrendanJamesLynskey/Torch_Sim_Frontend">Torch_Sim_Frontend</a></td></tr>
+        <tr><td>Documenting and writing code to help pre-tape-out verification</td><td>Golden models, workload-derived tests, correlation with RTL</td><td>01, 06</td><td><a href="https://brendanjameslynskey.github.io/SimEng_05_Verification_Bridge_cocotb/">05</a>, <a href="https://brendanjameslynskey.github.io/SimEng_06_Testing_Frameworks/">06</a>; <a href="https://github.com/BrendanJamesLynskey/RTL_CoSim_NTT">RTL_CoSim_NTT</a></td></tr>
+        <tr><td>Mentoring less experienced engineers</td><td>Code review, design patterns, testing discipline</td><td>02 (as teaching material)</td><td><a href="https://brendanjameslynskey.github.io/SimEng_06_Testing_Frameworks/">06</a> (as teaching material)</td></tr>
+        <tr><td>Helping in system bring-up</td><td>The simulator as the first target for the software stack</td><td>01, 09</td><td><a href="https://brendanjameslynskey.github.io/SimEng_03_SystemC_TLM_Models/">03</a> (TLM models as virtual platforms)</td></tr>
+        <tr><td>Defining and requirements capture for mission-mode software</td><td>Turning architecture behaviour into software requirements</td><td>06 (specs)</td><td><a href="https://brendanjameslynskey.github.io/SimEng_09_Specs_Requirements_Test_Plans/">09</a>: EARS, mission mode, traceability</td></tr>
+        <tr><td>Defining, tracking and reporting engineering metrics</td><td>Correlation error, coverage, simulator speed, test health</td><td>06, 08</td><td><a href="https://brendanjameslynskey.github.io/SimEng_08_Jira_and_Engineering_Metrics/">08</a>, <a href="https://brendanjameslynskey.github.io/SimEng_11_Performance_Analysis/">11</a>: Jira, flow metrics, regression gates</td></tr>
+        <tr><td>On-time delivery against agreed metrics and sign-off</td><td>Milestones tied to measurable criteria</td><td>06</td><td><a href="https://brendanjameslynskey.github.io/SimEng_08_Jira_and_Engineering_Metrics/">08</a>, <a href="https://brendanjameslynskey.github.io/SimEng_09_Specs_Requirements_Test_Plans/">09</a>: evidence for sign-off</td></tr>
     </table>
     </div>
 </section>
@@ -893,13 +894,13 @@
     <h2>Required Skills: What to Be Ready to Show</h2>
     <div class="table-wrap">
     <table>
-        <tr><th>Requirement</th><th>Be ready to demonstrate</th></tr>
-        <tr><td>10+ years of Python or C/C++</td><td>Idiomatic, tested, readable code; performance awareness (profiling, data structures); the C/C++&ndash;Python boundary</td></tr>
-        <tr><td>Python event simulators, e.g. SimPy</td><td>Processes, Resource/Store/Container, interrupts, determinism, validation against queueing theory; the companion simulator is a worked example</td></tr>
-        <tr><td>Strong SoC and memory architecture knowledge</td><td>Memory hierarchies, HBM/DDR behaviour, DMA, interconnects and NoCs, arbitration, back-pressure, roofline reasoning</td></tr>
-        <tr><td>Various testing frameworks</td><td>pytest (fixtures, parametrisation), property-based testing, golden tests; cocotb or UVM on the hardware side</td></tr>
-        <tr><td>Specifications, test plans and reports</td><td>The skeletons on deck 06, slide 11; examples of documents you have written</td></tr>
-        <tr><td>Communicating with expert and non-expert audiences</td><td>A one-paragraph answer first, evidence after; explaining a hot-spot to a manager and to an architect</td></tr>
+        <tr><th>Requirement</th><th>Be ready to demonstrate</th><th>Toolkit evidence</th></tr>
+        <tr><td>10+ years of Python or C/C++</td><td>Idiomatic, tested, readable code; performance awareness (profiling, data structures); the C/C++&ndash;Python boundary</td><td><a href="https://brendanjameslynskey.github.io/SimEng_02_Rust_Python_PyO3/">02</a>, <a href="https://brendanjameslynskey.github.io/SimEng_03_SystemC_TLM_Models/">03</a>; <a href="https://github.com/BrendanJamesLynskey/SystemC_Accelerator_Model">SystemC_Accelerator_Model</a>, <a href="https://github.com/BrendanJamesLynskey/Rust_DES_Kernel">Rust_DES_Kernel</a></td></tr>
+        <tr><td>Python event simulators, e.g. SimPy</td><td>Processes, Resource/Store/Container, interrupts, determinism, validation against queueing theory; the companion simulator is a worked example</td><td><a href="https://brendanjameslynskey.github.io/SimEng_01_Rust_for_Simulation_Engineers/">01</a>; <a href="https://github.com/BrendanJamesLynskey/Rust_DES_Kernel">Rust_DES_Kernel</a></td></tr>
+        <tr><td>Strong SoC and memory architecture knowledge</td><td>Memory hierarchies, HBM/DDR behaviour, DMA, interconnects and NoCs, arbitration, back-pressure, roofline reasoning</td><td><a href="https://brendanjameslynskey.github.io/SimEng_04_Memory_Systems_DRAM_HBM/">04</a>, <a href="https://brendanjameslynskey.github.io/SimEng_03_SystemC_TLM_Models/">03</a>; <a href="https://github.com/BrendanJamesLynskey/Memory_System_Sim">Memory_System_Sim</a></td></tr>
+        <tr><td>Various testing frameworks</td><td>pytest (fixtures, parametrisation), property-based testing, golden tests; cocotb or UVM on the hardware side</td><td><a href="https://brendanjameslynskey.github.io/SimEng_06_Testing_Frameworks/">06</a>, <a href="https://brendanjameslynskey.github.io/SimEng_05_Verification_Bridge_cocotb/">05</a>; <a href="https://github.com/BrendanJamesLynskey/RTL_CoSim_NTT">RTL_CoSim_NTT</a></td></tr>
+        <tr><td>Specifications, test plans and reports</td><td>The skeletons on deck 06, slide 11; examples of documents you have written</td><td><a href="https://brendanjameslynskey.github.io/SimEng_09_Specs_Requirements_Test_Plans/">09</a>; the spec, test plan and matrix in <a href="https://github.com/BrendanJamesLynskey/Torch_Sim_Frontend">Torch_Sim_Frontend</a></td></tr>
+        <tr><td>Communicating with expert and non-expert audiences</td><td>A one-paragraph answer first, evidence after; explaining a hot-spot to a manager and to an architect</td><td>Every deck's takeaways slide</td></tr>
     </table>
     </div>
     <div class="callout">
@@ -915,16 +916,16 @@
         <div class="diagram-panel accent-border">
             <h4>Domain</h4>
             <ul>
-                <li><strong>AI/ML, HPC or cryptography:</strong> LLM inference physics (deck 03), FHE basics (deck 09).</li>
-                <li><strong>Performance analysis:</strong> roofline, queueing, profiling, statistics (decks 03, 06, 08).</li>
+                <li><strong>AI/ML, HPC or cryptography:</strong> LLM inference physics (deck 03), FHE basics (deck 09); real models into an accelerator model (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_10_PyTorch_ONNX_Frontends/">10</a>).</li>
+                <li><strong>Performance analysis:</strong> roofline, queueing, profiling, statistics (decks 03, 06, 08); flame graphs, cachegrind and regression gates on these simulators (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_11_Performance_Analysis/">11</a>).</li>
             </ul>
         </div>
         <div class="diagram-panel accent-border">
             <h4>Engineering</h4>
             <ul>
-                <li><strong>Rust:</strong> a likely route to a faster simulator core behind a Python API (PyO3), see deck 08.</li>
-                <li><strong>Jira:</strong> linking milestones to spec sections and metrics.</li>
-                <li><strong>Jenkins and CI/CD:</strong> per-push tests, nightly sweeps, golden-metric gates (deck 06 Jenkinsfile).</li>
+                <li><strong>Rust:</strong> a faster simulator core behind a Python API (PyO3), see deck 08; built and measured, bit-exact, 53&ndash;69&times; faster than SimPy (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_01_Rust_for_Simulation_Engineers/">01</a>, <a href="https://brendanjameslynskey.github.io/SimEng_02_Rust_Python_PyO3/">02</a>; <a href="https://github.com/BrendanJamesLynskey/Rust_DES_Kernel">Rust_DES_Kernel</a>).</li>
+                <li><strong>Jira:</strong> linking milestones to spec sections and metrics; JQL, workflows and flow metrics (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_08_Jira_and_Engineering_Metrics/">08</a>).</li>
+                <li><strong>Jenkins and CI/CD:</strong> per-push tests, nightly sweeps, golden-metric gates (deck 06 Jenkinsfile); real pipelines for five repositories (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_07_Jenkins_for_Simulation_Teams/">07</a>).</li>
                 <li><strong>Git:</strong> branching, review, reproducible runs stamped with the commit SHA.</li>
             </ul>
         </div>
@@ -1122,6 +1123,13 @@
         <li>Can you sketch PyTorch, ONNX Runtime and HEIR integration paths, and explain NTTs? (Deck 09)</li>
         <li>Can you explain why CKKS bootstrapping is memory-bound, name the fixes, and say how you would validate an FHE accelerator model? (Slide 07; FHE series)</li>
         <li>Have you read the company's public material on photonic computing and FHE? (Deck 10)</li>
+        <li>Can you explain ownership and a BinaryHeap event list in Rust, and how a PyO3 port was kept bit-exact? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_01_Rust_for_Simulation_Engineers/">01</a>, <a href="https://brendanjameslynskey.github.io/SimEng_02_Rust_Python_PyO3/">02</a>)</li>
+        <li>Can you explain DRAM and HBM timing (tRCD, tRP, tFAW, refresh), FR-FCFS and address mapping, and why bandwidth &times; efficiency fails? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_04_Memory_Systems_DRAM_HBM/">04</a>)</li>
+        <li>Can you explain SystemC's AT and LT styles and the quantum, and how a cocotb testbench uses a golden model? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_03_SystemC_TLM_Models/">03</a>, <a href="https://brendanjameslynskey.github.io/SimEng_05_Verification_Bridge_cocotb/">05</a>)</li>
+        <li>Can you write a declarative Jenkinsfile with a matrix, a nightly parameter and a performance gate, and say how often that gate raises false alarms? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_07_Jenkins_for_Simulation_Teams/">07</a>, <a href="https://brendanjameslynskey.github.io/SimEng_11_Performance_Analysis/">11</a>)</li>
+        <li>Can you write JQL for release readiness, and compute cycle time and WIP from a workflow history? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_08_Jira_and_Engineering_Metrics/">08</a>)</li>
+        <li>Can you write EARS requirements, define mission-mode software, and generate a traceability matrix from the tests? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_09_Specs_Requirements_Test_Plans/">09</a>)</li>
+        <li>Can you trace a real model on the meta device and explain operator coverage as a metric? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_10_PyTorch_ONNX_Frontends/">10</a>)</li>
         <li>Do you have one evidence story per required skill? (Slide 03)</li>
     </ul>
 </section>
