@@ -1035,7 +1035,7 @@
 <section class="slide" id="slide-08">
     <div class="slide-number">08</div>
     <h2>Practice Questions: Simulation</h2>
-    <p>Answer aloud before opening each outline.</p>
+    <p>Answer aloud before opening each outline. About 200 more, with worked answers and tested coding challenges: <a href="https://github.com/BrendanJamesLynskey/Interview_Simulation">Interview_Simulation</a>.</p>
     <details class="qa"><summary>Model a DMA engine feeding a compute unit through a bounded FIFO in SimPy. How do you show back-pressure?</summary>
         <p>DMA and compute as processes; the FIFO as <code>simpy.Store(capacity=k)</code>; memory channels as a <code>Resource</code>. <code>yield fifo.put(tile)</code> blocks when full, which is the back-pressure. Measure DMA stall time on <code>put</code> and compute stall on <code>get</code>; sweep k to find where throughput saturates. (Deck 02, slide 07.)</p></details>
     <details class="qa"><summary>How do you validate a performance model of hardware that does not exist yet?</summary>
