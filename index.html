@@ -830,6 +830,8 @@
         <li><a href="#slide-05">Photonic Computing: A Primer</a></li>
         <li><a href="#slide-06">What a Photonic-System Simulator Must Model</a></li>
         <li><a href="#slide-07">The FHE Half: Findings and Questions</a></li>
+        <li><a href="#slide-07b">Compute in Transit in Three Steps</a></li>
+        <li><a href="#slide-07c">Practice Questions: Compute in Transit</a></li>
         <li><a href="#slide-08">Practice Questions: Simulation</a></li>
         <li><a href="#slide-09">Practice Questions: Workloads, Frameworks and Process</a></li>
         <li><a href="#slide-10">A Plausible First 90 Days</a></li>
@@ -868,6 +870,7 @@
                 <li>Delivered with <strong>specs, test plans, metrics and CI</strong>: deck 06.</li>
                 <li>And, for a photonic product above all, <strong>power and energy</strong> alongside speed: deck 07.</li>
                 <li>The <strong>FHE half</strong> of the role: the sister series <a href="https://brendanjameslynskey.github.io/FHE_Hub_Accelerator_Simulators/">FHE Accelerator Simulators</a> (slide 07).</li>
+                <li><strong>Photonic compute on the network path</strong>: what a link module that computes on traffic could do for LLM training, from a budget to an experiment to a simulation: the <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/">Compute in Transit</a> series (slides <a href="#slide-07b">07b</a> and <a href="#slide-07c">07c</a>).</li>
             </ul>
         </div>
     </div>
@@ -1033,6 +1036,56 @@
         <p>HEIR lowers a secret-annotated program to a CKKS-dialect program with explicit rotations, relinearisations, rescales and bootstraps; a front end reads that and emits the simulator's operation trace. Cost feedback into HEIR's choices (for example where to place bootstraps) is the natural next step. (<a href="https://brendanjameslynskey.github.io/FHESim_03_Simulating_an_FHE_Accelerator/">FHE 03</a>; deck 09.)</p></details>
 </section>
 
+<section class="slide" id="slide-07b">
+    <div class="slide-number">07b</div>
+    <h2>Compute in Transit in Three Steps</h2>
+    <p>Photonic compute need not sit in an accelerator. <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-module">A photonic link module (arXiv:2608.21536)</a> is a QSFP56 pluggable whose optics can transform traffic on its way through the link. The <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/">Compute in Transit</a> series asks what such a module could usefully do for LLM training, in three steps, each with recorded results: a budget, an experiment and a simulation.</p>
+    <div class="table-wrap">
+    <table>
+        <tr><th>Step and finding</th><th>Number</th><th>Where</th></tr>
+        <tr><td><strong>Budget.</strong> The <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-opsperbyte">operations per byte</a> the module can apply at line rate, reading the claim of &ldquo;tens of GFLOPs&rdquo; as 10 to 99 GFLOP/s on a 25 GB/s port</td><td>0.40&ndash;3.96 ops/byte; 1.43&ndash;14.14 at the prototype optics&rsquo; rate, about 7 GB/s</td><td><a href="https://brendanjameslynskey.github.io/CiT_01_Compute_in_Transit/#slide-06">CiT 01</a></td></tr>
+        <tr><td>If the optical transform is <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-charged">charged</a> against that budget, only short transforms fit</td><td>longest BF16 FFT at the high end: length 8</td><td><a href="https://brendanjameslynskey.github.io/CiT_01_Compute_in_Transit/#slide-07">CiT 01</a></td></tr>
+        <tr><td><strong>Experiment.</strong> <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-demo">DeMo</a> with its top-k replaced by a <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-fixedband">fixed band</a> (no comparisons needed): final validation loss, 15.8M-parameter GPT, 8 simulated workers, 3,000 steps</td><td>AdamW 1.646; top-k 1.785; low and calibrated bands 3.087&ndash;3.158; the best fixed band, a random set, 2.700 (one seed)</td><td><a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-04">CiT 04</a></td></tr>
+        <tr><td>Why: on the delta DeMo compresses, the low band keeps almost none of the energy (<a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-capturedenergy">captured energy</a>, 1-D 256-point chunks)</td><td>low band 0.000; top-k 0.417</td><td><a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-06">CiT 04</a></td></tr>
+        <tr><td>Emulated optics: with the full scale fixed and feedback of the exact band, every run diverged; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-sentfeedback">feeding back the band sent</a> repaired it</td><td>diverged: 11.153&ndash;558.834; repaired, full scale re-set: 2.878&ndash;3.423</td><td><a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-08">CiT 04</a></td></tr>
+        <tr><td><a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-wirebytes">Wire bytes</a> per worker per step: the band&rsquo;s all-gather against AdamW&rsquo;s dense ring all-reduce (its payload is 16.0x smaller)</td><td>13,854,288 against 55,417,152 (4.0x)</td><td><a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-03">CiT 04</a></td></tr>
+        <tr><td><strong>Simulation.</strong> With the transform charged at 10 GFLOP/s, a pluggable band&rsquo;s step against the band on the GPU (2 DCs &times; 4 workers, 100 GbE); module compute holds most of it</td><td>33.348 ms against 1.443 ms; module compute 95.0%</td><td><a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-06">CiT 05</a></td></tr>
+        <tr><td>The module&rsquo;s compute budget needed before its optics, not the budget, sets its rate</td><td>140.0 GFLOP/s (bracket: 10 to 99)</td><td><a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-08">CiT 05</a></td></tr>
+        <tr><td>A pluggable band (all-gather) against AdamW or top-k, over 0.1 to 1,000 GB/s of WAN</td><td>never <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-breakeven">breaks even</a></td><td><a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-07">CiT 05</a></td></tr>
+        <tr><td>The band <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-switchsum">summed at the switch</a> (E&prime;, hypothetical) beats AdamW below a WAN rate; the band ring all-reduced on the GPUs with no module (C&prime;, also not run) does better</td><td>E&prime;: 1.57 GB/s (0.83 on the exact band&rsquo;s steps); C&prime;: 6.58 GB/s</td><td><a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-11">CiT 05</a></td></tr>
+    </table>
+    </div>
+    <div class="callout">
+        <div class="callout-label">A hypothesis, and what is illustrative</div>
+        <p>The repaired optics band reached the loss 3.158 in 1,800 steps against the exact band&rsquo;s 2,667, but from one seed per run: that it beats the exact band is a <strong>hypothesis</strong>, so the simulation also reports every in-transit result on <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-exactsteps">the exact band&rsquo;s steps</a>. Apart from the 9.7 W static power, the 2.76 pJ/bit, the 25 GB/s port and the 4 &times; 14 Gb/s optics (from the paper and the developer&rsquo;s website), the module&rsquo;s coefficients are illustrative, and anything beyond 15.8M parameters, 8 workers and 3,000 steps is an extrapolation.</p>
+    </div>
+    <p>Explore it on the <a href="https://compute-in-transit-results.vercel.app/">results site</a>: the experiment&rsquo;s loss curves, captured energy and emulated optics replayed from the run logs, the simulation running live in the browser, and the Colab notebook that ran the sweep. Code: <a href="https://github.com/BrendanJamesLynskey/DeMo_Fixed_Band_Experiment">DeMo_Fixed_Band_Experiment</a> and <a href="https://github.com/BrendanJamesLynskey/Training_Transit_Sim">Training_Transit_Sim</a>.</p>
+</section>
+
+<section class="slide" id="slide-07c">
+    <div class="slide-number">07c</div>
+    <h2>Practice Questions: Compute in Transit</h2>
+    <p>Answer aloud before opening each outline. Numbers are from the experiment&rsquo;s and the simulation&rsquo;s recorded results; the <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#glossary">Compute in Transit glossary</a> explains every term.</p>
+    <details class="qa"><summary>How would you simulate a pluggable link module that computes on traffic?</summary>
+        <ul><li>Model the module as a <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-linkkernel">link kernel</a>: <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-slowstage">pipelined stages</a> (port, optics with one pass per bit plane, compute budget, FPGA) where the slowest stage sets the rate. For one worker&rsquo;s dense delta at 99 GFLOP/s these take 1.267, 2.262, 3.199 and 0.792 ms.</li>
+        <li>Put it in the collective&rsquo;s path in a SimPy topology (workers, DC fabrics, WAN links) and price each round by its slowest operation, so <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-hotspot">hot-spot attribution</a> falls out.</li>
+        <li>Take convergence (steps to a loss) from a training experiment, not from the simulator; the simulator turns steps into time and energy.</li>
+        <li>Keep a closed form for each step and use discrete events for what it cannot see, such as queueing on a shared WAN: at a background load of 0.9, AdamW&rsquo;s 4.075 ms step becomes 26.291 ms.</li>
+        <li>Sweep the unknowns (transform charged or free, GFLOP/s, ENOB, planes, WAN rate) and report break-even points by bisection. (<a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-02">CiT 05</a>, <a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-04">slide 04</a>; deck 06.)</li></ul></details>
+    <details class="qa"><summary>Why might a fixed band beat top-k on hardware without comparisons, and did it?</summary>
+        <p>Top-k needs comparisons, which are not in the module&rsquo;s published operations; a fixed band is a gather, needs no indices and halves the payload (16.0x smaller than dense, against top-k&rsquo;s 8.0x). It wins only if the momentum&rsquo;s energy sits in that band. It did not: the low and calibrated bands ended at 3.087&ndash;3.158 against top-k&rsquo;s 1.785 (AdamW 1.646), because on the delta DeMo compresses the low band keeps 0.000 of the energy against top-k&rsquo;s 0.417; the best fixed band was a random set of coefficients (2.700, one seed). Top-k reaches 3.158 in 400 steps, the band in 2,667. (<a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-04">CiT 04</a>, <a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-06">slide 06</a>.)</p></details>
+    <details class="qa"><summary>Why did the first emulated-optics runs diverge, and what fixed them?</summary>
+        <p>The full scale was fixed after calibration, so values clipped (22.59% to 57.50% over a run), and error feedback subtracted the exact band, so the optics&rsquo; quantisation and clipping errors were never corrected. Feeding back the band actually sent, which each worker receives in the all-gather anyway, and re-setting the full scale every 100 steps, brought the clip rate to 0.22&ndash;0.30% and the final loss to 2.878&ndash;3.423 (ENOB 6 to 12). Lesson for any analogue engine in a training loop: model what the hardware produces, not what it was asked to produce. (<a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-08">CiT 04</a>, <a href="https://brendanjameslynskey.github.io/CiT_04_Fixed_Band_Experiment/#slide-09">slide 09</a>.)</p></details>
+    <details class="qa"><summary>When does summing in the switch beat a pluggable?</summary>
+        <p>A pluggable sees one worker&rsquo;s stream, so DeMo-style compression must all-gather, and all-gather traffic grows with the number of workers: the band still sends 13,854,288 bytes per worker per step at 8 workers, a quarter of AdamW&rsquo;s 55,417,152, while needing 1,800 steps to AdamW&rsquo;s 400. Over 0.1 to 1,000 GB/s of WAN it never breaks even with AdamW or top-k. Summing needs both streams at one point, which is a switch: then only the band sum crosses the WAN, and E&prime; beats AdamW below 1.57 GB/s of WAN (0.83 GB/s on the exact band&rsquo;s steps). But the same summation done on the GPUs as a ring all-reduce, with no module, beats AdamW below 6.58 GB/s, and on the exact band&rsquo;s steps E&prime; never beats it. (<a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-07">CiT 05</a>, <a href="https://brendanjameslynskey.github.io/CiT_05_Training_Transit_Simulation/#slide-11">slide 11</a>; <a href="https://brendanjameslynskey.github.io/CiT_02_Data_Movement_in_LLM_Training/#slide-05">CiT 02</a>.)</p></details>
+    <details class="qa"><summary>How do you make a simulator&rsquo;s numbers trustworthy?</summary>
+        <ul><li><strong>One source:</strong> a script writes <code>results.md</code> (and <code>results.json</code>); every deck, README and site number is quoted from it, and CI fails if regenerating it changes it.</li>
+        <li><strong>Pinned inputs:</strong> the experiment&rsquo;s results vendored at a commit with their SHA-256; the device and link presets from the inference simulator at a pinned commit.</li>
+        <li><strong>Cross-checks:</strong> the model&rsquo;s wire bytes must equal the experiment&rsquo;s (55,417,152 = 55,417,152 for AdamW); at zero background load the discrete-event step equals the closed form.</li>
+        <li><strong>Parity fixtures:</strong> a port (the results site&rsquo;s TypeScript) is checked against fixtures generated by the Python, so the browser reproduces the recorded results.</li>
+        <li><strong>Honest labels:</strong> hypotheses (single seeds), illustrative coefficients and extrapolations are marked as such. (<a href="https://compute-in-transit-results.vercel.app/method">Method and limits</a>; deck 06.)</li></ul></details>
+</section>
+
 <section class="slide" id="slide-08">
     <div class="slide-number">08</div>
     <h2>Practice Questions: Simulation</h2>
@@ -1128,6 +1181,7 @@
         <li>Can you list acceleration techniques in order, with measured examples? (Deck 08)</li>
         <li>Can you sketch PyTorch, ONNX Runtime and HEIR integration paths, and explain NTTs? (Deck 09)</li>
         <li>Can you explain why CKKS bootstrapping is memory-bound, name the fixes, and say how you would validate an FHE accelerator model? (Slide 07; FHE series)</li>
+        <li>Can you work out a link module's operations-per-byte budget, say why a fixed band did not replace top-k, and say when summing in the switch beats a pluggable? (Slides <a href="#slide-07b">07b</a>, <a href="#slide-07c">07c</a>; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/">Compute in Transit</a>)</li>
         <li>Have you read the company's public material on photonic computing and FHE? (Deck 10)</li>
         <li>Can you explain ownership and a BinaryHeap event list in Rust, and how a PyO3 port was kept bit-exact? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_01_Rust_for_Simulation_Engineers/">01</a>, <a href="https://brendanjameslynskey.github.io/SimEng_02_Rust_Python_PyO3/">02</a>)</li>
         <li>Can you explain DRAM and HBM timing (tRCD, tRP, tFAW, refresh), FR-FCFS and address mapping, and why bandwidth &times; efficiency fails? (Toolkit <a href="https://brendanjameslynskey.github.io/SimEng_04_Memory_Systems_DRAM_HBM/">04</a>)</li>
